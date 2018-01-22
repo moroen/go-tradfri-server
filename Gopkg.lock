@@ -17,7 +17,7 @@
   branch = "v2"
   name = "github.com/go-yaml/yaml"
   packages = ["."]
-  revision = "c95af922eae69f190717a0b7148960af8c55a072"
+  revision = "d670f9405373e636a5a2765eea47fac0c9bc91a4"
 
 [[projects]]
   name = "github.com/gorilla/context"
@@ -28,20 +28,20 @@
 [[projects]]
   name = "github.com/gorilla/mux"
   packages = ["."]
-  revision = "7f08801859139f86dfafd1c296e2cba9a80d292e"
-  version = "v1.6.0"
+  revision = "53c1911da2b537f792e7cafcb446b05ffe33b996"
+  version = "v1.6.1"
 
 [[projects]]
   branch = "master"
   name = "github.com/moroen/canopus"
   packages = ["."]
-  revision = "57a74df3b6c83fc7998c9e089957ec1b86e076ad"
+  revision = "6857d5ac4e6e978759b49374a255471ae4e1f367"
 
 [[projects]]
   branch = "master"
   name = "github.com/moroen/go-tradfricoap"
   packages = ["."]
-  revision = "fe39d9f4943de9f0be803dd5e56bac460d6aaf5f"
+  revision = "676af5c99a2a9b62fff4db8369cdbad111cf0580"
 
 [[projects]]
   name = "github.com/tucnak/store"
