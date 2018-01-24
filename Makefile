@@ -1,8 +1,14 @@
 dep = ${GOPATH}/bin/dep
 curDir = $(shell pwd)
-# vendor = $(curDir)/vendor
-target = go-tradfri-server
+vendor = $(curDir)/vendor
 sources = *.go
+
+# Target
+target = go-tradfri-server
+
+# Development
+devTarget = go-tradfri-server-dev
+devDepepends = ${GOPATH}/src/github/moroen/*
 
 all: $(target)
 
@@ -15,8 +21,14 @@ $(dep):
 $(vendor):
 	dep ensure -v
 
-test: $(target)
-	./$(target)
+$(devTarget): $(sources) $(devDepends)
+	rm -rf vendor
+	go build -v -o $(devTarget)
+
+dev: $(devTarget) 
+
+test: dev
+	./$(devTarget)
 
 clean:
-	rm -rf $(vendor); rm $(target)
+	rm -rf $(vendor); rm -f $(target); rm -f $(devTarget)
