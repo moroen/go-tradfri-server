@@ -15,3 +15,9 @@ type returnMessageDevices struct {
 	Status string             `json:"status"`
 	Result coap.TradfriLights `json:"result"`
 }
+
+type returnMessageDevice struct {
+	Action string            `json:"action"`
+	Status string            `json:"status"`
+	Result coap.TradfriLight `json:"result"`
+}

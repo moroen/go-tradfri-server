@@ -21,12 +21,18 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetLights(w http.ResponseWriter, r *http.Request) {
-	lights, _, err := coap.GetDevices()
-	if err != nil {
-		panic(err.Error())
-	}
-	answer := returnMessageDevices{Action: "getLights", Status: "Ok", Result: lights}
+	answer := returnMessageDevices{Action: "getLights"}
 
+	lights, err := coap.GetDevices()
+	if err != nil {
+		if err == coap.ErrorTimeout {
+			answer.Status = "Timeout"
+		} else {
+			log.Fatal(err.Error())
+		}
+	} else {
+		answer = returnMessageDevices{Action: "getLights", Status: "Ok", Result: lights}
+	}
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(answer)
@@ -42,15 +48,28 @@ func GetLight(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if device, err := coap.GetLight(int64(id)); err == nil {
+		answer := returnMessageDevice{Action: "getLight", Status: "Ok", Result: device}
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(device)
+		json.NewEncoder(w).Encode(answer)
+	} else {
+		answer := returnMessageDevice{Action: "getLight"}
+		if err == coap.ErrorTimeout {
+			answer.Status = "Timeout"
+		} else {
+			answer.Status = "Unknown error"
+		}
+		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(answer)
 	}
 }
 
 func SetState(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	state := 0
+
+	answer := returnMessageDevice{Action: "setState"}
 
 	log.Println("SetState: ", params["id"], params["command"])
 	if params["command"] == "on" {
@@ -61,11 +80,24 @@ func SetState(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err.Error())
 	}
-	coap.SetState(int64(id), state)
+
+	device, err := coap.SetState(int64(id), state)
+	if err != nil {
+		if err == coap.ErrorTimeout {
+			answer.Status = "Timeout"
+		}
+	} else {
+		answer.Status = "Ok"
+		answer.Result = device
+	}
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(answer)
 }
 
 func SetDimmer(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
+	answer := returnMessageDevice{Action: "setLevel"}
 
 	log.Println("SetDimmer: ", params["id"], params["value"])
 
@@ -74,12 +106,18 @@ func SetDimmer(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err.Error())
 		}
-		coap.SetLevel(int64(id), value)
+		device, err := coap.SetLevel(int64(id), value)
+		if err != nil {
+			answer.Status = "Error: Failed to set level"
+		} else {
+			answer.Status = "Ok"
+			answer.Result = device
+		}
 	} else {
 		log.Println("Failed to set level")
-		errMsg := returnMessageSimple{Action: "setLevel", Status: "error", Result: err.Error()}
-		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(errMsg)
+		answer.Status = "Error: Failed to set level"
 	}
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(answer)
 }

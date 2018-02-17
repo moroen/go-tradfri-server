@@ -18,5 +18,8 @@ $(vendor):
 test: $(target)
 	./$(target)
 
+install: $(target)
+	go install
+
 clean:
-	rm -rf $(vendor); rm $(target)
+	rm -rf $(vendor); rm -rf $(target)
