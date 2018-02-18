@@ -4,7 +4,7 @@ vendor = $(curDir)/vendor
 sources = *.go
 
 # Target
-target = go-tradfri-server
+target = tradfri-server
 
 # Development
 devTarget = go-tradfri-server-dev
@@ -13,7 +13,7 @@ devDepepends = ${GOPATH}/src/github/moroen/*
 all: $(target)
 
 $(target): $(dep) $(vendor) $(sources) 
-	go build -v
+	go build -v -o $(target)
 
 $(dep):
 	go get -u github.com/golang/dep/cmd/dep
@@ -34,4 +34,4 @@ install: $(target)
 	go install
 
 clean:
-	rm -rf $(vendor); rm -rf $(target)
+	rm -rf $(vendor); rm -rf $(target); rm -rf $(devTarget)
