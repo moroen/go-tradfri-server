@@ -1,0 +1,14 @@
+[Unit]
+Description=Tradfri HHTP Server
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/tradfri-server
+WatchdogSec=30s
+Restart=on-failure
+
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target

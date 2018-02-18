@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/coreos/go-systemd/daemon"
 	coap "github.com/moroen/go-tradfricoap"
 )
 
@@ -27,6 +28,7 @@ func main() {
 	router := NewRouter()
 	log.Printf("Starting server - listening on port %s", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), router))
+	daemon.SdNotify(false, "READY=1")
 }
 
 func Logger(inner http.Handler, name string) http.Handler {

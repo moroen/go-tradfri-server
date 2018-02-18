@@ -14,6 +14,12 @@
   revision = "5096fddd2cca678b0801ece8513a06e580981fd2"
 
 [[projects]]
+  name = "github.com/coreos/go-systemd"
+  packages = ["daemon"]
+  revision = "40e2722dffead74698ca12a750f64ef313ddce05"
+  version = "v16"
+
+[[projects]]
   branch = "v2"
   name = "github.com/go-yaml/yaml"
   packages = ["."]
@@ -41,7 +47,7 @@
   branch = "master"
   name = "github.com/moroen/go-tradfricoap"
   packages = ["."]
-  revision = "676af5c99a2a9b62fff4db8369cdbad111cf0580"
+  revision = "03de2a95d807ffe3db0118b69dbfcd6fd456ca16"
 
 [[projects]]
   name = "github.com/tucnak/store"
@@ -52,6 +58,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "787e8bfaeddbf47d24875146577493abc411a9dacb9afff6c5d67e34fe7b2ecd"
+  inputs-digest = "56f50358e6b6fca64c829230c194c6525b409d9f8894357764fa5de247525992"
   solver-name = "gps-cdcl"
   solver-version = 1
