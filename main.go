@@ -28,6 +28,19 @@ func main() {
 	router := NewRouter()
 	log.Printf("Starting server - listening on port %s", port)
 	daemon.SdNotify(false, "READY=1")
+	go func() {
+		interval, err := daemon.SdWatchdogEnabled(false)
+		if err != nil || interval == 0 {
+			return
+		}
+		for {
+			_, err := http.Get(fmt.Sprintf("http://127.0.0.1:%s", port)) // Check if server is running
+			if err == nil {
+				daemon.SdNotify(false, "WATCHDOG=1")
+			}
+			time.Sleep(interval)
+		}
+	}()
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), router))
 }
 
