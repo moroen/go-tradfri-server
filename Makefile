@@ -1,6 +1,6 @@
 dep = ${GOPATH}/bin/dep
 curDir = $(shell pwd)
-vendor = $(curDir)/vendor
+# vendor = $(curDir)/vendor
 sources = *.go
 
 # Target
