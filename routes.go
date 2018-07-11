@@ -61,6 +61,9 @@ router.HandleFunc("/lights/{id}/level/{value}", SetDimmer).Methods("GET")
 func NewRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 
+	s := http.StripPrefix("/styles/", http.FileServer(http.Dir("./styles/")))
+	router.PathPrefix("/styles/").Handler(s)
+
 	for _, route := range routes {
 		var handler http.Handler
 
@@ -69,5 +72,6 @@ func NewRouter() *mux.Router {
 
 		router.Methods(route.Method).Path(route.Pattern).Name(route.Name).Handler(handler)
 	}
+
 	return router
 }

@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"strconv"
@@ -11,13 +11,40 @@ import (
 	coap "github.com/moroen/go-tradfricoap"
 )
 
+type PageData struct {
+	PageTitle string
+	Lights    coap.TradfriLights
+}
+
 func Index(w http.ResponseWriter, r *http.Request) {
 	// params := mux.Vars(r)
 
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.Header().Set("Content-Type", "text/html; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
 
-	fmt.Fprintln(w, "Welcome!")
+	// t := template.New("some template") // Create a template.
+
+	t, err := template.ParseFiles("templates/index.tmpl")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	// t, _ = t.Parse("<H1>{{.PageTitle}}</H1>")
+
+	lights, err := coap.GetDevices()
+	if err != nil {
+		panic(err.Error())
+	}
+
+	data := PageData{
+		PageTitle: "Test",
+		Lights:    lights,
+	}
+
+	t.Execute(w, data)
+	// t.ExecuteTemplate(w, "index.tmpl", data)
+
+	// fmt.Fprintln(w, "Welcome!")
 }
 
 func GetLights(w http.ResponseWriter, r *http.Request) {

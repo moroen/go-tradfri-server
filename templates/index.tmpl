@@ -1,0 +1,38 @@
+<html>
+<head>
+    <title>{{.PageTitle}}</title>
+    <link href="/styles/main.css" rel="stylesheet">
+</head>
+
+<body>
+<H1>Lights</H1>
+
+<table>
+    <th>Id</th><th>Name</th><th>Model</th><th>State</th><th>Level</th>
+    {{range .Lights}}
+        <tr>
+            <td>
+                {{.Id}}
+            </td>
+            <td>
+                {{.Name}}
+            </td>
+            <td>
+                {{.Model}}
+            </td>
+            <td id="state">
+                {{.State}}
+            </td>
+            <td id="level">
+                {{.Dimmer}}
+            </td>
+            
+            <td>
+                <a class="button" href="/lights/{{.Id}}/on">On</a>
+                <a class="button" href="/lights/{{.Id}}/off">Off</a>                
+            </td>
+        </tr>
+    {{end}}
+</table>
+</body>
+</html>
