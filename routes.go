@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -61,7 +62,7 @@ router.HandleFunc("/lights/{id}/level/{value}", SetDimmer).Methods("GET")
 func NewRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 
-	s := http.StripPrefix("/styles/", http.FileServer(http.Dir("./styles/")))
+	s := http.StripPrefix("/styles/", http.FileServer(http.Dir(fmt.Sprintf("%s/styles/", getExecDir()))))
 	router.PathPrefix("/styles/").Handler(s)
 
 	for _, route := range routes {

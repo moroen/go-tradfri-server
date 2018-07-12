@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"path"
+	"runtime"
 	"time"
 
 	"github.com/coreos/go-systemd/daemon"
@@ -17,6 +19,11 @@ type Todo struct {
 }
 
 const port = "8085"
+
+func getExecDir() string {
+	_, currentFilePath, _, _ := runtime.Caller(0)
+	return path.Dir(currentFilePath)
+}
 
 func main() {
 

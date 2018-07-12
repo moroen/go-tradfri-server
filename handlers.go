@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -22,9 +23,14 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
 
+	/*
+		_, currentFilePath, _, _ := runtime.Caller(0)
+		dirpath := path.Dir(currentFilePath)
+	*/
+
 	// t := template.New("some template") // Create a template.
 
-	t, err := template.ParseFiles("templates/index.tmpl")
+	t, err := template.ParseFiles(fmt.Sprintf("%s/templates/index.tmpl", getExecDir()))
 	if err != nil {
 		panic(err.Error())
 	}
